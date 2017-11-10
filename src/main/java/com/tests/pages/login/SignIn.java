@@ -15,16 +15,31 @@ public class SignIn extends Page {
     public WebElement yourTrips;
 
     @FindBy(id = "email")
-    public WebElement emailID;
+    public WebElement emailId;
 
-    @FindBy(id = "tripidSecond")
-    public WebElement tripidSecond;
+    @FindBy(id = "password")
+    public WebElement passWord;
 
-    @FindBy(id = "registerButton4")
-    public WebElement registerButton4;
+    @FindBy(id = "signInButton")
+    public WebElement signInButton;
 
+    @FindBy(id = "SignIn")
+    public WebElement signIns;
 
+    @FindBy(linkText = "I forgot my password")
+    public WebElement forgotPassword;
 
+    @FindBy(id = "errors1")
+    public WebElement error1;
 
+   public void signIn(String emailId, String password) throws InterruptedException {
+       click(signIns);
+       fill(this.emailId,"Email Id").with(emailId);
+       fill(passWord,"Passwword Id").with(password);
+       click(signInButton);
+   }
 
+   public boolean presenceOfErrorMessage(){
+       return isElementVisible(error1);
+   }
 }

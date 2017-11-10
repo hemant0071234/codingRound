@@ -2,7 +2,9 @@ package com.tests.helpers.ui;
 
 import com.google.common.base.Function;
 import com.tests.setup.DriverFactory;
-import org.junit.rules.Timeout;
+import exceptions.ElementNotFoundException;
+import exceptions.ElementVisibleException;
+import exceptions.PageNotReadyException;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
@@ -26,14 +28,14 @@ public class Page {
 
     public Page() {
         driver = DriverFactory.getDriver();
-        wait = new WebDriverWait(driver, Timeout.element_timeout_in_seconds);
+        wait = new WebDriverWait(driver, 30);
         action = new Actions(driver);
         jsDriver = (JavascriptExecutor) driver;
     }
 
     public Page(WebDriver driver) {
         this.driver = driver;
-        wait = new WebDriverWait(driver, Timeout.element_timeout_in_seconds);
+        wait = new WebDriverWait(driver, 30);
         action = new Actions(driver);
         jsDriver = (JavascriptExecutor) this.driver;
     }
@@ -171,7 +173,7 @@ public class Page {
         return true;
     }
     protected boolean waitForTableauViz() throws Exception {
-        int timeout = Timeout.chart_timeout_in_secs;
+        int timeout = 30;
         boolean isVizAvailable = false;
         for (int i = 0; i <= timeout; i++)
         {
@@ -302,12 +304,12 @@ public class Page {
     }
 
     public Page waitForElementToBeVisible(WebElement element, String itemName) throws InterruptedException, ElementNotVisibleException {
-        int timeout = Timeout.element_timeout_in_seconds;
+        int timeout = 30;
         return waitForElementToBeVisible(element, itemName, timeout);
     }
 
     protected Page waitForElementAtIndexToBeVisible(List<WebElement> elementsList, int index, String itemName) throws ElementNotVisibleException, InterruptedException {
-        int timeout = Timeout.element_timeout_in_seconds;
+        int timeout = 30;
         for (int i = 0; i <= 10; i++) {
             try {
                 WebElement elementInList = elementsList.get(index);
@@ -324,9 +326,7 @@ public class Page {
             Thread.sleep(timeout * 100);
         }
         try {
-            if (!elementsList.get(index).isDisplayed()) {
-                throw new ElementNotVisibleException(itemName, timeout);
-            }
+            //if (!elementsList.get(index).isDisplayed()) throw new ElementNotVisibleException(itemName, timeout);
         } catch (NoSuchElementException e) {
             throw new ElementNotFoundException(itemName, timeout);
         } catch (IndexOutOfBoundsException e) {
@@ -342,7 +342,7 @@ public class Page {
     //Do not delete, could be used for future reference
     public void waitForCustomCondition(WebElement elementTobeClicked) {
         FluentWait<WebElement> wait = new FluentWait<WebElement>(elementTobeClicked);
-        wait.withTimeout(Timeout.element_timeout_in_seconds,TimeUnit.SECONDS);
+        wait.withTimeout(30,TimeUnit.SECONDS);
         Function<WebElement, Boolean> function = new Function<WebElement, Boolean>()
         {
             public Boolean apply(WebElement ele) {
@@ -360,7 +360,7 @@ public class Page {
 
     protected Page waitForElementToBeClickable(WebElement element, String itemName) throws InterruptedException, ElementNotVisibleException {
         waitForPageLoad();
-        WebDriverWait wait = new WebDriverWait(driver, Timeout.element_timeout_in_seconds);
+        WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.elementToBeClickable(element));
         return this;
     }
@@ -381,10 +381,10 @@ public class Page {
 
         try {
             if (!element.isDisplayed()) {
-                throw new ElementNotVisibleException(itemName, timeoutInSeconds);
+                //throw new ElementNotVisibleException(itemName, timeoutInSeconds);
             }
         } catch (NoSuchElementException e) {
-            throw new ElementßßßßNotFoundException(itemName, timeoutInSeconds);
+            throw new ElementNotFoundException(itemName, timeoutInSeconds);
         }
         return this;
     }
@@ -400,7 +400,7 @@ public class Page {
     }
 
     protected Page waitForElementToBeInvisible(WebElement element, String itemName) throws InterruptedException {
-        int timeout = Timeout.element_timeout_in_seconds;
+        int timeout = 30;
         return waitForElementToBeInvisible(element, itemName, timeout);
     }
 
@@ -517,7 +517,7 @@ public class Page {
     }
 
     protected Page waitForElementToHaveClassNameAttribute(WebElement element, String className) throws InterruptedException {
-        int timeout = Timeout.element_timeout_in_seconds;
+        int timeout = 30;
         for (int i = 0; i <= 100; i++) {
             try {
                 if (isClassNamePresent(element, className))
@@ -533,7 +533,7 @@ public class Page {
     }
 
     protected Page waitForElementToNotHaveClassNameAttribute(WebElement element, String className) throws InterruptedException {
-        int timeout = Timeout.element_timeout_in_seconds;
+        int timeout = 30;
         for (int i = 0; i <= 100; i++) {
             try {
                 if (!isClassNamePresent(element, className))
@@ -681,7 +681,7 @@ public class Page {
 
     protected void jsWaitTillTrue(JavascriptExecutor jsDriver, final String condition) {
         Wait wait = new FluentWait(jsDriver)
-                .withTimeout(Timeout.element_timeout_in_seconds, TimeUnit.SECONDS)
+                .withTimeout(30, TimeUnit.SECONDS)
                 .pollingEvery(100, TimeUnit.MILLISECONDS)
                 .ignoring(WebDriverException.class);
 
