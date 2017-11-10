@@ -1,2 +1,3 @@
 1. We can keep Maven or Gradle in Java project, keeping gradle here and removing Maven
 2. Added log4j
+3.
